@@ -10,16 +10,27 @@ class Store():
         print(f"Товар {item} добавлен в ассортимент")
 
     def delete_item(self, item):
-        print(f"Товар {self.items.pop(item)} удален из ассортимента")
+        if item not in self.items:
+            print(f"Товар {item} отсутствует в ассортименте этого магазина")
+        else:
+            del self.items[item]
+            print(f"Товар {item} удален из ассортимента")
 
     def get_price(self, item):
-        return self.items.get('item')
+        if item not in self.items:
+            print(f"Товар {item} отсутствует в ассортименте этого магазина")
+        else:
+            print(f"Цена {item} - {self.items[item]} рублей")
 
     def new_price(self, item, price):
-        self.items[item] = price
+        if item not in self.items:
+            print(f"Товар {item} отсутствует в ассортименте этого магазина")
+        else:
+            self.items[item] = price
+            print(f"Новая цена товара {item} - {price} рублей")
 
 list_store = []
-
+ind = None
 
 # Запускаем цикл общения с пользователем
 while True:
@@ -36,17 +47,57 @@ while True:
 
     match num:
         case "1":
-            description = input("Введите задачу: ")
-            deadline = input("Введите срок выполнения в формате ДД:ММ:ГГ: ")
-            menager.add(description, deadline)
+            ind = None
+            shop = input("Ведите название магазина: ")
+            address = input("Ведите адрес магазина: ")
+            store = Store(shop, address)
+            list_store.append(store)
+            print(f"Магазин {shop} добавлен в нашу сеть")
         case "2":
-            menager.print_tasks()
-            index = int(input("Введите индекс выполненной задачи: "))
-            menager.completed(index)
+            ind = None
+            print("Список магазинов нашей сети:")
+            for i, shop in enumerate(list_store):
+                print(f"{i + 1} {list_store[i].name}")
         case "3":
-            menager.print_tasks()
+            ind = None
+            for i, shop in enumerate(list_store):
+                print(f"{i + 1} {list_store[i].name}")
+            ind = int(input("Введите номер в списке интересующего вас магазина: ")) - 1
         case "4":
-            menager.exit()
+            if ind == None:
+                print("Вы не выбрали магазин для работы. Для начала выберите пункт 3 из меню")
+            elif 0 <= ind < len(list_store):
+                item = input("Введите наименование товара: ")
+                price = input("Введите цену товара: ")
+                list_store[ind].add_item(item, price)
+            else:
+                print("Вы неправильно выбрали магазин для работы. Для начала повторите пункт 3 из меню")
+        case "5":
+            if ind == None:
+                print("Вы не выбрали магазин для работы. Для начала выберите пункт 3 из меню")
+            elif 0 <= ind < len(list_store):
+                item = input("Введите наименование товара, который вы хотитите удалить: ")
+                list_store[ind].delete_item(item)
+            else:
+                print("Вы неправильно выбрали магазин для работы. Для начала повторите пункт 3 из меню")
+        case "6":
+            if ind == None:
+                print("Вы не выбрали магазин для работы. Для начала выберите пункт 3 из меню")
+            elif 0 <= ind < len(list_store):
+                item = input("Введите наименование товара, цену которого вы хотите узнать: ")
+                list_store[ind].get_price(item)
+            else:
+                print("Вы неправильно выбрали магазин для работы. Для начала повторите пункт 3 из меню")
+        case "7":
+            if ind == None:
+                print("Вы не выбрали магазин для работы. Для начала выберите пункт 3 из меню")
+            elif 0 <= ind < len(list_store):
+                item = input("Введите наименование товара, цену которого вы хотите изменить: ")
+                price = input(f"Введите новую цену {item}: ")
+                list_store[ind].new_price(item, price)
+            else:
+                print("Вы неправильно выбрали магазин для работы. Для начала повторите пункт 3 из меню")
+        case "8":
             break
         case _:
             print("Такого действия нет. Повторите выбор.")
