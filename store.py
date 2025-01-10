@@ -1,14 +1,16 @@
 class Store():
     # Конструктор класса
     def __init__(self, name, address):
-        self.name = name
-        self.address = address
-        self.items = {}
+        self.name = name                # Название магазина
+        self.address = address          # Адрес магазина
+        self.items = {}                 # Ассортимент магазина (товар - ключ, значение - цена)
 
+    # Добавление товара
     def add_item(self, item, price):
         self.items[item] = price
         print(f"Товар {item} добавлен в ассортимент")
 
+    # Удаление товара
     def delete_item(self, item):
         if item not in self.items:
             print(f"Товар {item} отсутствует в ассортименте этого магазина")
@@ -16,12 +18,14 @@ class Store():
             del self.items[item]
             print(f"Товар {item} удален из ассортимента")
 
+    # Получение цены товара
     def get_price(self, item):
         if item not in self.items:
             print(f"Товар {item} отсутствует в ассортименте этого магазина")
         else:
             print(f"Цена {item} - {self.items[item]} рублей")
 
+    # Изменение цены товара
     def new_price(self, item, price):
         if item not in self.items:
             print(f"Товар {item} отсутствует в ассортименте этого магазина")
@@ -29,8 +33,8 @@ class Store():
             self.items[item] = price
             print(f"Новая цена товара {item} - {price} рублей")
 
-list_store = []
-ind = None
+list_store = []                         # Список магазинов (каждый элемент - объект класса Store
+ind = None                              # Индекс магазина в списке, с которым производятся действия
 
 # Запускаем цикл общения с пользователем
 while True:
