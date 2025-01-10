@@ -3,13 +3,28 @@
 # описание задачи, срок выполнения и статус (выполнено/не выполнено). Реализуй функцию для добавления задач,
 # отметки выполненных задач и вывода списка текущих (не выполненных) задач.
 
-#Создаем класс Task
+# Создаем класс Task
 class Task():
     # Конструктор класса
     def __init__(self, description, deadline, status="No"):
         self.description = description  # Описание задачи
         self.deadline = deadline        # Срок исполнения
         self.status = status            # Статус (выполнено/не выполнено)
+
+# Создаем класс Check для проверки корректного ввода даты
+class Check():
+    def __init__(self, date):
+        self.date = date
+
+    def check_date(self):
+        if len(self.date) != 8 or self.date[2] != ":" or self.date[5] != ":":
+            return False
+        else:
+            dd, mm, gg = self.date.split(':')
+            if 1 <= int(dd) <= 31 and 1 <= int(mm) <= 12 and 0 <= int(gg) <= 99:
+                return True
+            else:
+                return False
 
 # Создаем класс Menager
 class Menager():
@@ -66,7 +81,15 @@ while True:
     match num:
         case "1":
             description = input("Введите задачу: ")
-            deadline = input("Введите срок выполнения в формате ДД:ММ:ГГ: ")
+            while True:
+                deadline = input("Введите срок выполнения в формате ДД:ММ:ГГ: ")
+                obj = Check(deadline)
+                print(obj.date)
+                if not obj.check_date():
+                    print("Неверный формат даты")
+                else:
+                    del obj
+                    break
             menager.add(description, deadline)
         case "2":
             menager.print_tasks()
