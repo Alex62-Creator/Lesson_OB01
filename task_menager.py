@@ -86,6 +86,7 @@ while True:
                 obj = Check(deadline)
                 print(obj.date)
                 if not obj.check_date():
+                    del obj
                     print("Неверный формат даты")
                 else:
                     del obj
